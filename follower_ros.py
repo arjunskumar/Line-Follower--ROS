@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-# BEGIN ALL
+
+"""follower_ros.py: Robot will follow the Yellow Line in a track"""
+
+__author__  = "Arjun S Kumar"
+
 import rospy, cv2, cv_bridge, numpy
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist
@@ -15,7 +19,8 @@ class Follower:
     self.twist = Twist()
   def image_callback(self, msg):
     image = self.bridge.imgmsg_to_cv2(msg,desired_encoding='bgr8')
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV) 
+    # change below lines to map the color you wanted robot to follow
     lower_yellow = numpy.array([ 10,  10,  10])
     upper_yellow = numpy.array([255, 255, 250])
     mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
@@ -30,12 +35,12 @@ class Follower:
       cx = int(M['m10']/M['m00'])
       cy = int(M['m01']/M['m00'])
       #cv2.circle(image, (cx, cy), 20, (0,0,255), -1)
-      # BEGIN CONTROL
+      # CONTROL starts
       err = cx - w/2
       self.twist.linear.x = 0.2
       self.twist.angular.z = -float(err) / 100
       self.cmd_vel_pub.publish(self.twist)
-      # END CONTROL
+      # CONTROL ends
     cv2.imshow("mask",mask)
     cv2.imshow("output", image)
     cv2.waitKey(3)
