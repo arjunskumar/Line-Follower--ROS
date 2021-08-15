@@ -4,7 +4,10 @@
 
 __author__  = "Arjun S Kumar"
 
-import rospy, cv2, cv_bridge, numpy
+import rospy
+import cv2,
+import cv_bridge
+import numpy
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist
 
